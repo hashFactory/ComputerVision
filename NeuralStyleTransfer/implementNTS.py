@@ -372,4 +372,4 @@ def run(iterations = ITERATIONS, content_image=CONTENT_IMAGE, style_image=STYLE_
 
                     show_image(generated_image)
                 tic = time.time();
-        sess.close()
+        sess.reset_default_graph()
