@@ -25,6 +25,13 @@ simage = cwd+"images/monet.jpg"
 url = "http://www.vlfeat.org/matconvnet/models/imagenet-vgg-verydeep-19.mat"
 file_name = cwd+"pretrained-model/imagenet-vgg-verydeep-19.mat"
 
+LAYERS = [
+        ('conv1_1', 0.5),
+        ('conv2_1', 1.0),
+        ('conv3_1', 1.5),
+        ('conv4_1', 3.0),
+        ('conv5_1', 4.0),
+    ]
 
 
 # Output folder for the images.
@@ -283,13 +290,6 @@ def style_loss_func(sess, model):
     # (conv5_1) and decrease the weight of the lower layers (conv1_1).
     # To have harder features, decrease the weight of the higher layers
     # (conv5_1) and increase the weight of the lower layers (conv1_1).
-    layers = [
-        ('conv1_1', 3.0),
-        ('conv2_1', 2.5),
-        ('conv3_1', 2.0),
-        ('conv4_1', 2.0),
-        ('conv5_1', 2.0),
-    ]
 
     """layers = [
         ('conv1_1', 0.5),
@@ -299,9 +299,9 @@ def style_loss_func(sess, model):
         ('conv5_1', 4.0),
     ]"""
 
-    E = [_style_loss(sess.run(model[layer_name]), model[layer_name]) for layer_name, _ in layers]
-    W = [w for _, w in layers]
-    loss = sum([W[l] * E[l] for l in range(len(layers))])
+    E = [_style_loss(sess.run(model[layer_name]), model[layer_name]) for layer_name, _ in LAYERS]
+    W = [w for _, w in LAYERS]
+    loss = sum([W[l] * E[l] for l in range(len(LAYERS))])
     return loss
 
 def tv_loss_func(sess, model):
