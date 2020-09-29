@@ -327,7 +327,7 @@ download_if_not_exists(file_name, url)
 scipy_loadmat = scipy.io.loadmat(cwd+"pretrained-model/imagenet-vgg-verydeep-19.mat")
 
 def run(iterations = ITERATIONS, content_image=CONTENT_IMAGE, style_image=STYLE_IMAGE):
-    with tf.Session() as sess:
+    with tf.Graph().as_default(), tf.Session() as sess:
         # Load the images.
         content_image = load_image(content_image)
         style_image = load_image(style_image)
@@ -383,4 +383,3 @@ def run(iterations = ITERATIONS, content_image=CONTENT_IMAGE, style_image=STYLE_
                 tic = time.time();
 
         sess.close()
-        del(model)
