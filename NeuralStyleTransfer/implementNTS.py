@@ -284,12 +284,20 @@ def style_loss_func(sess, model):
     # To have harder features, decrease the weight of the higher layers
     # (conv5_1) and increase the weight of the lower layers (conv1_1).
     layers = [
+        ('conv1_1', 3.0),
+        ('conv2_1', 2.5),
+        ('conv3_1', 2.0),
+        ('conv4_1', 2.0),
+        ('conv5_1', 2.0),
+    ]
+
+    """layers = [
         ('conv1_1', 0.5),
         ('conv2_1', 1.0),
         ('conv3_1', 1.5),
         ('conv4_1', 3.0),
         ('conv5_1', 4.0),
-    ]
+    ]"""
 
     E = [_style_loss(sess.run(model[layer_name]), model[layer_name]) for layer_name, _ in layers]
     W = [w for _, w in layers]
@@ -372,4 +380,7 @@ def run(iterations = ITERATIONS, content_image=CONTENT_IMAGE, style_image=STYLE_
 
                     show_image(generated_image)
                 tic = time.time();
+
         sess.reset_default_graph()
+        sess.clear_session()
+        sess.close()
