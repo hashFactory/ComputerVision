@@ -159,7 +159,7 @@ def load_vgg_model(path, IMAGE_HEIGHT, IMAGE_WIDTH, pool_type='avg'):
         42 is softmax
     """
 
-    vgg = scipy.io.loadmat(path)
+    vgg = copy.deepcopy(scipy_loadmat)
 
     vgg_layers = vgg['layers']
 
@@ -324,7 +324,7 @@ def setImageDim(width = 400, height = 300):
 noise_ratio=NOISE_RATIO
 pool_type='avg'
 download_if_not_exists(file_name, url)
-base_model = load_vgg_model(cwd+"pretrained-model/imagenet-vgg-verydeep-19.mat", IMAGE_HEIGHT, IMAGE_WIDTH, pool_type)
+scipy_loadmat = scipy.io.loadmat(cwd+"pretrained-model/imagenet-vgg-verydeep-19.mat")
 
 def run(iterations = ITERATIONS, content_image=CONTENT_IMAGE, style_image=STYLE_IMAGE):
     with tf.Session() as sess:
@@ -333,7 +333,7 @@ def run(iterations = ITERATIONS, content_image=CONTENT_IMAGE, style_image=STYLE_
         style_image = load_image(style_image)
 
         # Load the model.
-        model = copy.deepcopy(base_model)
+        model = load_vgg_model(cwd+"pretrained-model/imagenet-vgg-verydeep-19.mat", IMAGE_HEIGHT, IMAGE_WIDTH, pool_type)
 
         # Generate the white noise and content presentation mixed image
         # which will be the basis for the algorithm to "paint".
@@ -383,3 +383,4 @@ def run(iterations = ITERATIONS, content_image=CONTENT_IMAGE, style_image=STYLE_
                 tic = time.time();
 
         sess.close()
+        del(model)
