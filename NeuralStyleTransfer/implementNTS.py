@@ -321,7 +321,7 @@ def setImageDim(width = 400, height = 300):
 
 
 noise_ratio=NOISE_RATIO
-pool_type='avg'
+pool_type='max'
 def run(iterations = ITERATIONS, content_image=CONTENT_IMAGE, style_image=STYLE_IMAGE):
     with tf.Session() as sess:
 
@@ -380,7 +380,5 @@ def run(iterations = ITERATIONS, content_image=CONTENT_IMAGE, style_image=STYLE_
 
                     show_image(generated_image)
                 tic = time.time();
-
-        sess.reset_default_graph()
-        sess.clear_session()
+                
         sess.close()
