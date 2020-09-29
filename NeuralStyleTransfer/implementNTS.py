@@ -208,9 +208,9 @@ def load_vgg_model(path, IMAGE_HEIGHT, IMAGE_WIDTH, pool_type='avg'):
             use 'max' for sharper styles
         """
         if pool_type == 'avg':
-            return tf.nn.avg_pool2D(prev_layer, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
+            return tf.nn.avg_pool(prev_layer, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
         else:
-            return tf.nn.max_pool2D(prev_layer, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
+            return tf.nn.max_pool(prev_layer, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
 
     # Constructs the graph model.
     graph = {}
@@ -323,7 +323,7 @@ def setImageDim(width = 400, height = 300):
 noise_ratio=NOISE_RATIO
 pool_type='avg'
 def run(iterations = ITERATIONS, content_image=CONTENT_IMAGE, style_image=STYLE_IMAGE):
-    with tf.compat.v1.Session() as sess:
+    with tf.Session() as sess:
 
         download_if_not_exists(file_name, url)
 
@@ -338,7 +338,7 @@ def run(iterations = ITERATIONS, content_image=CONTENT_IMAGE, style_image=STYLE_
         # which will be the basis for the algorithm to "paint".
         input_image = generate_noise_image(content_image, IMAGE_HEIGHT, IMAGE_WIDTH, noise_ratio)
 
-        sess.run(tf.compat.v1.global_variables_initializer())
+        sess.run(tf.global_variables_initializer())
         # Construct content_loss using content_image.
         sess.run(model['input'].assign(content_image))
         content_loss = content_loss_func(sess, model)
@@ -360,7 +360,7 @@ def run(iterations = ITERATIONS, content_image=CONTENT_IMAGE, style_image=STYLE_
         #
         # The content is built from one layer, while the style is from five
         # layers. Then we minimize the total_loss, which is the equation 7.
-        optimizer = tf.compat.v1.train.AdamOptimizer(2.0)
+        optimizer = tf.train.AdamOptimizer(2.0)
         train_step = optimizer.minimize(total_loss)
 
         sess.run(tf.global_variables_initializer())
