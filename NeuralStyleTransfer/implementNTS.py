@@ -323,13 +323,11 @@ def setImageDim(width = 400, height = 300):
 
 noise_ratio=NOISE_RATIO
 pool_type='avg'
+download_if_not_exists(file_name, url)
 base_model = load_vgg_model(cwd+"pretrained-model/imagenet-vgg-verydeep-19.mat", IMAGE_HEIGHT, IMAGE_WIDTH, pool_type)
 
 def run(iterations = ITERATIONS, content_image=CONTENT_IMAGE, style_image=STYLE_IMAGE):
     with tf.Session() as sess:
-
-        download_if_not_exists(file_name, url)
-
         # Load the images.
         content_image = load_image(content_image)
         style_image = load_image(style_image)
