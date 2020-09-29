@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 from .utils import cwd, download_if_not_exists
 import imageio
 import matplotlib.pyplot as plt
+import copy
 
 
 cimage = cwd+"images/louvre_small.jpg"
@@ -321,7 +322,9 @@ def setImageDim(width = 400, height = 300):
 
 
 noise_ratio=NOISE_RATIO
-pool_type='max'
+pool_type='avg'
+base_model = load_vgg_model(cwd+"pretrained-model/imagenet-vgg-verydeep-19.mat", IMAGE_HEIGHT, IMAGE_WIDTH, pool_type)
+
 def run(iterations = ITERATIONS, content_image=CONTENT_IMAGE, style_image=STYLE_IMAGE):
     with tf.Session() as sess:
 
@@ -332,7 +335,7 @@ def run(iterations = ITERATIONS, content_image=CONTENT_IMAGE, style_image=STYLE_
         style_image = load_image(style_image)
 
         # Load the model.
-        model = load_vgg_model(cwd+"pretrained-model/imagenet-vgg-verydeep-19.mat", IMAGE_HEIGHT, IMAGE_WIDTH, pool_type)
+        model = copy.deepcopy(base_model)
 
         # Generate the white noise and content presentation mixed image
         # which will be the basis for the algorithm to "paint".
@@ -380,5 +383,5 @@ def run(iterations = ITERATIONS, content_image=CONTENT_IMAGE, style_image=STYLE_
 
                     show_image(generated_image)
                 tic = time.time();
-                
+
         sess.close()
