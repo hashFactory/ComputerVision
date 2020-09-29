@@ -372,8 +372,8 @@ def run(iterations = ITERATIONS, content_image=CONTENT_IMAGE, style_image=STYLE_
                 if i % 100 == 0:
                     generated_image = sess.run(model['input'])
                     # save current generated image in the "/output" directory
-                    save_image(cwd+"output/" + str(i) + ".jpg", generated_image)
-                    save_image(cwd+'output/generated_image.jpg', generated_image)
+                    save_image(cwd+ OUTPUT_DIR + str(i) + ".jpg", generated_image)
+                    save_image(cwd+ OUTPUT_DIR + 'generated_image.jpg', generated_image)
 
                     show_image(generated_image)
 
